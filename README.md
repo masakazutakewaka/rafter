@@ -1,8 +1,7 @@
 # Rafter
+__work in progress.__
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rafter`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+This gem is a Rails plugin for [ridgepole](https://github.com/winebarrel/ridgepole).
 
 ## Installation
 
@@ -20,9 +19,12 @@ Or install it yourself as:
 
     $ gem install rafter
 
-## Usage
+## Usege
+Once you install the gem, it does
 
-TODO: Write usage instructions here
+- build test DB with ridgepole when test is run
+- update ridgepole's Schemafile when 'rails g model ...' is executed
+- apply ridgepole's Schemafile when commands like 'rails db:setup' and 'rails db:reset' are executed
 
 ## Development
 
@@ -32,7 +34,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/rafter.
+Bug reports and pull requests are welcome on GitHub at https://github.com/masakazutakewaka/rafter.
 
 ## License
 
