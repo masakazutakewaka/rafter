@@ -5,9 +5,21 @@ require '../extensions/active_record'
 
 module Rafter
   class Engine < Rails::Engine #:nodoc:
-    PATCH_FILES = %w( ../extensions/thor.rb ../extensions/active_record.rb)
-    initializer 'Rafter' do
-      PATCH_FILES.each(:load)
+    rake_tasks do
+      Rake::Task["db:setup"].clear
+      namespace :db do
+        desc "override db:setup to use ridgepole"
+        task setup: [:create, "schema:ridgepole:apply", :seed]
+      end
+
+      namespace :schema do
+        namespace :ridgepole do
+          desc "apply ridgepole's schemafile"
+          task :apply do
+            sh "ridgepole -c config/database.yml -E #{Rails.env} -f db/Schemafile.rb --apply"
+          end
+        end
+      end
     end
   end
 end
