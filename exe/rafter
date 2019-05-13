@@ -5,5 +5,5 @@ require "rafter"
 SPEC_RAILS_HELPER_PATH = 'spec/rails_helper.rb'
 
 context = File.read(SPEC_RAILS_HELPER_PATH)
-context.gsub!('ActiveRecord::Migration.maintain_test_schema!', 'Rafter.build_schema')
+context.gsub!('ActiveRecord::Migration.maintain_test_schema!', 'Rafter::Schema.build')
 File.write(SPEC_RAILS_HELPER_PATH, context)
