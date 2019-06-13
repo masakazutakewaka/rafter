@@ -4,15 +4,23 @@ require "rafter/version"
 require "rafter/engine"
 
 module Rafter
-  class Schema
+  class Error < StandardError; end
+
+  module Schema
+    SCHEMA_FILE = %w(Schemafile Schemafile.rb db/Schemafile db/Schemafile.rb)
+    class NotFoundError < StandardError; end
+
     def self.build
-      conn_spec = YAML.load(File.read('config/database.yml').to_s)['development']
-      client = Ridgepole::Client.new(conn_spec)
-      dsl = File.read('db/Schemafile.rb')
-      delta = client.diff(dsl)
-      delta.migrate
+      status = system "ridgepole -c config/database.yml -E #{Rails.env} -f #{schema_file} --apply"
+      raise ::Error.new('ridgepole failed to apply Schemafile.') if status == false
     rescue => e
-      raise ::Error.new(e)
+        puts e.full_message
+        exit 1
+    end
+
+    def self.schema_file
+      not_found = Proc { NotFoundError.new('ridgepole\'s Schemafile was not found.')}
+      SCHEMA_FILE.find(not_found) { |f| File.file? Rails.root.join(f) }
     end
   end
 end

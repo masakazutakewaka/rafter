@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 create_table :<%= table_name %><%= primary_key_type %>, force: :cascade do |t|
 <% attributes.each do |attribute| -%>
