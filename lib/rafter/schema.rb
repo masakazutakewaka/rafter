@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
-require_relative './schemafile_finder'
-
 module Rafter
   module Schema
     class Error < StandardError; end
-
-    extend SchemafileFinder
 
     def self.apply
       status = system "ridgepole -c config/database.yml -E #{Rails.env} -f #{schema_file} --apply"
@@ -15,5 +11,11 @@ module Rafter
         puts e.full_message
         exit 1
     end
+
+    def self.schema_file
+      not_found = Proc.new { NotFoundError.new("Schemafile was not found") }
+      [Rails.root.join('db', 'Schemafile.rb'), ENV['SCHEMA_FILE']].find(not_found) { |f| File.file? f }
+    end
+    private_class_method :schema_file
   end
 end

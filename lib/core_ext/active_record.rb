@@ -2,12 +2,10 @@
 
 require 'rails/generators'
 require 'rails/generators/active_record/model/model_generator'
-require_relative '../rafter/schemafile_finder'
 
 module ActiveRecord
   module Generators
     class ModelGenerator
-      include ::Rafter::SchemafileFinder
 
       undef_method :create_migration_file
 
@@ -25,6 +23,11 @@ module ActiveRecord
         else
           ERB.new(::File.binread(source), nil, "-", "@output_buffer").result(context)
         end
+      end
+
+      def schema_file
+        not_found = Proc.new { return }
+        [Rails.root.join('db', 'Schemafile.rb'), ENV['SCHEMA_FILE']].find(not_found) { |f| File.file? f }
       end
     end
   end
