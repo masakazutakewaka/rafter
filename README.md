@@ -1,14 +1,17 @@
 # Rafter
-__work in progress.__
 
-This gem is a Rails plugin for [ridgepole](https://github.com/winebarrel/ridgepole).
+This gem is a Rails plugin for [ridgepole](https://github.com/winebarrel/ridgepole), a database schema manager.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'rafter'
+group :development, :test do
+# ...
+  gem 'rafter'
+# ...
+end
 ```
 
 And then execute:
@@ -20,11 +23,15 @@ Or install it yourself as:
     $ gem install rafter
 
 ## Usege
-Once you install the gem, it does
+Once you install the gem, it automatically does the followings for you.
 
-- build test DB with ridgepole when test is run
-- update ridgepole's Schemafile when 'rails g model ...' is executed
-- apply ridgepole's Schemafile when commands like 'rails db:setup' and 'rails db:reset' are executed
+- apply your schema file to the test database with ridgepole before spec is run
+- update your schema file when a model is generated with Rails CLI (`rails generate model ...`)
+- apply your schema file when databases are setup with Rails tasks (`rails db:setup`, `rails db:reset`)
+
+The path to your schema file defaults to `/app_root/db/Schemafile.rb`.
+
+You can change it by setting the env variable `SCHEMA_FILE`.
 
 ## Development
 
